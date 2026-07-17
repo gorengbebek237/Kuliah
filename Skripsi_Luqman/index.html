@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Smart Office Dashboard</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-building"></i> Smart Office</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" data-target="dashboard"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li class="nav-item" data-target="access-logs"><a href="#"><i class="fas fa-file-alt"></i> Access Report</a></li>
+                <li class="nav-item" data-target="registration"><a href="#"><i class="fas fa-id-card"></i> Pendaftaran RFID</a></li>
+                <li class="nav-item" data-target="settings"><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="user-profile">
+                    <span>Admin</span>
+                    <div class="avatar"><i class="fas fa-user"></i></div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                
+                <div id="dashboard" class="page-section active-section">
+                    <h1 class="page-title">Overview</h1>
+                    
+                    <div class="card clock-card">
+                        <p id="live-date" class="clock-date">MEMUAT TANGGAL...</p>
+                        <h2 id="live-time" class="clock-time">00:00:00 WIB</h2>
+                    </div>
+                    
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-icon blue"><i class="fas fa-door-open"></i></div>
+                            <div class="card-info">
+                                <h3>Status Pintu</h3>
+                                <p id="door-status" class="status-text locked">Terkunci</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon yellow"><i class="fas fa-lightbulb"></i></div>
+                            <div class="card-info">
+                                <h3>Lampu Ruangan</h3>
+                                <p id="lamp-status" class="status-text off">Mati</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-logs">
+                        <h2>Aktivitas Terakhir</h2>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Waktu</th>
+                                        <th>Nama</th>
+                                        <th>UID Kartu</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="log-table-body">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">Memuat data dari Firebase...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="access-logs" class="page-section">
+                    <h1 class="page-title">Laporan Akses Ruangan</h1>
+                    
+                    <div class="card filter-container">
+                        <div class="filter-group">
+                            <label for="filter-date">Filter Tanggal:</label>
+                            <input type="date" id="filter-date" class="date-input">
+                            <button id="btn-reset-filter" class="btn-reset" title="Reset Filter"><i class="fas fa-sync-alt"></i></button>
+                        </div>
+                        <button id="btn-download-excel" class="btn-excel"><i class="fas fa-download"></i> Download Laporan (Excel)</button>
+                    </div>
+
+                    <div class="card report-card">
+                        <div class="table-responsive">
+                            <table id="report-table">
+                                <thead>
+                                    <tr>
+                                        <th>TANGGAL</th>
+                                        <th>HARI</th>
+                                        <th>NAMA PENGGUNA</th>
+                                        <th>JAM AKSES</th>
+                                        <th>STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-table-body">
+                                    <tr><td colspan="5" style="text-align: center;">Memuat laporan...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="registration" class="page-section">
+                    <h1 class="page-title">Pendaftaran Kartu Baru</h1>
+                    
+                    <div class="registration-container">
+                        <div class="card form-card">
+                            <h2>Tambah Pengguna RFID</h2>
+                            <form id="rfid-form" class="custom-form">
+                                <div class="form-group">
+                                    <label for="rfid-name">Nama Pengguna</label>
+                                    <input type="text" id="rfid-name" placeholder="Contoh: Andi Wijaya" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rfid-uid">UID Kartu</label>
+                                    <div class="input-with-btn">
+                                        <input type="text" id="rfid-uid" placeholder="Contoh: A1B2C3D4" required>
+                                        <button type="button" class="btn-scan" title="Simulasikan scan kartu"><i class="fas fa-wifi"></i></button>
+                                    </div>
+                                    <small class="form-hint">Tap kartu pada perangkat untuk mengisi otomatis, atau ketik manual.</small>
+                                </div>
+                                <button type="submit" class="btn-submit">Simpan Data</button>
+                            </form>
+                        </div>
+
+                        <div class="card list-card">
+                            <h2>Daftar Kartu Terdaftar</h2>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>UID Kartu</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="registered-cards-body">
+                                        <tr>
+                                            <td colspan="3" style="text-align: center;">Memuat data dari Firebase...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settings" class="page-section">
+                    <h1 class="page-title">Kontrol Perangkat</h1>
+                    
+                    <div class="cards-grid">
+                        <div class="card control-card">
+                            <div class="control-header">
+                                <div class="card-icon blue"><i class="fas fa-door-closed"></i></div>
+                                <h3>Sistem Pintu (Solenoid)</h3>
+                            </div>
+                            <div class="control-body">
+                                <div class="control-item">
+                                    <span>Mode Operasi</span>
+                                    <select id="door-mode" class="custom-select">
+                                        <option value="auto">Otomatis (RFID/Touch)</option>
+                                        <option value="manual">Manual (Kontrol Web)</option>
+                                    </select>
+                                </div>
+                                <div class="control-item">
+                                    <span>Buka Kunci Pintu</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="door-toggle" disabled>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <small class="hint-text">*Tombol buka pintu hanya aktif jika mode Manual.</small>
+                            </div>
+                        </div>
+
+                        <div class="card control-card">
+                            <div class="control-header">
+                                <div class="card-icon yellow"><i class="fas fa-lightbulb"></i></div>
+                                <h3>Sistem Lampu</h3>
+                            </div>
+                            <div class="control-body">
+                                <div class="control-item">
+                                    <span>Mode Operasi</span>
+                                    <select id="lamp-mode" class="custom-select">
+                                        <option value="auto">Otomatis (Sensor PIR)</option>
+                                        <option value="manual">Manual (Kontrol Web)</option>
+                                    </select>
+                                </div>
+                                <div class="control-item">
+                                    <span>Nyalakan Lampu</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="lamp-toggle" disabled>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <small class="hint-text">*Tombol lampu hanya aktif jika mode Manual.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
