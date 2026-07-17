@@ -1,0 +1,232 @@
+/* --- Konfigurasi Tema (Variabel Warna - Premium Clean Emerald) --- */
+:root {
+    --primary-green: #1b5e20;      /* Hijau Zamrud Tua yang Mewah */
+    --secondary-green: #2ecc71;    /* Hijau Mint Segar untuk Aksen */
+    --bg-color: #f4f7f6;           /* Abu-abu Terang dengan Tint Alami */
+    --card-bg: #ffffff;            /* Putih Bersih untuk Kartu */
+    --text-main: #1e272e;          /* Hitam Arang untuk Keterbacaan Tinggi */
+    --text-muted: #808e9b;         /* Abu-abu Terang untuk Teks Sekunder */
+    --border-radius-lg: 16px;      /* Sudut Lembut & Modern */
+    --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.025);
+    --shadow-hover: 0 12px 30px rgba(27, 94, 32, 0.08);
+}
+
+/* --- Reset & Base Styles --- */
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 40px 20px;
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* --- Header Styling (Minimalist & Premium) --- */
+.header {
+    text-align: left; /* Diubah ke kiri khas dashboard profesional */
+    background: var(--card-bg);
+    padding: 30px 35px;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-subtle);
+    border-left: 6px solid var(--primary-green); /* Garis aksen vertikal */
+}
+
+.header h1 {
+    margin: 0 0 6px 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+.header p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* --- Grid Layout --- */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+/* --- Card UI Styling (Premium Soft UI) --- */
+.card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-subtle);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(0, 0, 0, 0.01);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(27, 94, 32, 0.1);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--primary-green);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #edf2f0;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+/* --- Status Badges (Sleek Minimalist Pills) --- */
+.status {
+    font-weight: 600;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 30px; /* Diubah menjadi bentuk kapsul bulat sempurna */
+    display: inline-block;
+    min-width: 65px;
+    text-align: center;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.on {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #c8e6c9;
+}
+
+.off {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+/* --- Typography & Elements --- */
+p {
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #edf2f0;
+    margin: 25px 0;
+}
+
+small {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* --- Responsivitas (Mobile Friendly) --- */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 10px;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .full-width {
+        grid-column: span 1;
+    }
+    .header {
+        padding: 25px 20px;
+    }
+    .header h1 {
+        font-size: 22px;
+    }
+}
+
+/* --- Tambahan Layout Khusus HTML Baru --- */
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.status-row span:first-child {
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.update-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.update-info span {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.update-info strong {
+    font-size: 14px;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+/* --- Layout Kartu Kondisi Udara (DHT) --- */
+.dht-info-container {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.dht-item {
+    background: #f8faf9;
+    padding: 20px 15px;
+    border-radius: 12px;
+    flex: 1;
+    text-align: center;
+    border: 1px solid #edf2f0;
+}
+
+.dht-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.dht-value {
+    margin: 0;
+    font-size: 32px;
+    color: var(--primary-green);
+    font-weight: 700;
+}
+
+.dht-value small {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-left: 3px;
+}
+
+/* --- Mengatur Kartu Kelembapan Tanah agar memanjang 2 baris ke bawah --- */
+.card-tall {
+    grid-row: span 2;
+    display: flex;
+    flex-direction: column;
+}
