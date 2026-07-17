@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Monitoring</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <h1>Sistem Monitoring dan Otomatisasi Penyiraman serta Pendinginan Ruangan Greenhouse pada Tanaman Cabai</h1>
+        <p>By Kinanthi Maya Oktaviany 20122695</p>
+    </header>
+
+    <main class="grid">
+        <section class="card">
+            <h3>Suhu Udara Real-time</h3>
+            <div style="font-size: 48px; font-weight: bold; text-align: center; color: #FF9800; margin: 20px 0;">
+                <span id="realtimeTemp">--</span> <span style="font-size: 24px;">°C</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>Kelembapan Udara Real-time</h3>
+            <div style="font-size: 48px; font-weight: bold; text-align: center; color: #00BCD4; margin: 20px 0;">
+                <span id="realtimeHum">--</span> <span style="font-size: 24px;">%</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>Kelembapan Tanah (Analog)</h3>
+            <div id="gaugeSoil"></div>
+        </section>
+
+        <section class="card">
+            <h3>Status Perangkat</h3>
+            <p>Pompa Air: <span id="statPump" class="status">Menunggu...</span></p>
+            <p>Kipas Pendingin: <span id="statFan" class="status">Menunggu...</span></p>
+            <hr>
+            <p>Terakhir Update: <br><small id="lastUpdate">-</small></p>
+        </section>
+
+        <section class="card full-width">
+            <h3>Grafik DHT21 (Suhu & Kelembapan Udara)</h3>
+            
+            <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 10px; font-weight: 600; font-size: 15px;">
+                <div style="color: #FF9800;">■ Suhu (°C)</div>
+                <div style="color: #00BCD4;">■ Kelembapan Udara (%)</div>
+            </div>
+
+            <div id="lineChartDHT"></div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
