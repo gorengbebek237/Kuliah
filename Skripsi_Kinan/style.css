@@ -1,0 +1,202 @@
+/* =========================================================================
+   STYLE.CSS - SMART CLASS DASHBOARD (MODERN UI)
+========================================================================= */
+
+:root {
+    /* Palet Warna Modern (Mirip referensi Tailwind/Bootstrap terbaru) */
+    --primary: #3b82f6;        /* Biru utama */
+    --primary-hover: #2563eb;
+    --primary-light: #eff6ff;  /* Biru sangat terang untuk background aktif */
+    --success: #10b981;        /* Hijau presensi masuk */
+    --danger: #ef4444;         /* Merah presensi pulang/hapus */
+    --warning: #f59e0b;
+    --dark: #1f2937;           /* Teks utama gelap */
+    --gray: #6b7280;           /* Teks sekunder abu-abu */
+    --gray-light: #9ca3af;
+    --bg-body: #f3f4f6;        /* Abu-abu sangat terang untuk background luar */
+    --card-bg: #ffffff;        /* Putih bersih untuk dalam kotak */
+    --border-color: #e5e7eb;
+    
+    /* Efek Bayangan Lembut */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+
+body { background-color: var(--bg-body); color: var(--dark); line-height: 1.6; }
+
+/* ================= NAVIGASI ATAS =================
+.top-nav {
+    position: sticky; top: 0; z-index: 900;
+    background: var(--card-bg); display: flex; justify-content: space-between;
+    align-items: center; padding: 15px 24px; box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+.nav-left { display: flex; align-items: center; gap: 15px; }
+.hamburger-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray); padding: 5px; }
+.hamburger-btn:hover { color: var(--primary); }
+.top-nav h1 { font-size: 1.25rem; font-weight: 700; color: var(--dark); letter-spacing: -0.025em;} */
+
+/* ================= NAVIGASI ATAS ================= */
+.top-nav {
+    position: sticky; top: 0; z-index: 900;
+    background: #00509D; /* GANTI WARNA BACKGROUND DI SINI */
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 15px 24px; box-shadow: var(--shadow-sm);
+    border-bottom: none; /* Garis bawah dihapus biar lebih clean */
+}
+.nav-left { display: flex; align-items: center; gap: 15px; }
+.hamburger-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #ffffff; padding: 5px; } /* Ikon menu jadi putih */
+.hamburger-btn:hover { color: var(--primary-light); }
+.top-nav h1 { font-size: 1.25rem; font-weight: 700; color: #ffffff; letter-spacing: -0.025em;} /* Teks judul jadi putih */
+
+/* ================= SIDEBAR MENU ================= */
+.sidebar {
+    position: fixed; left: -280px; top: 0; width: 280px; height: 100%;
+    background: var(--card-bg); z-index: 1001; transition: transform 0.3s ease-in-out, left 0.3s ease-in-out;
+    display: flex; flex-direction: column; box-shadow: var(--shadow-lg);
+    border-right: 1px solid var(--border-color);
+}
+.sidebar.open { left: 0; }
+.sidebar-header { padding: 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.2rem; color: var(--dark); }
+/* .brand-logo { background: var(--primary); color: white; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);} */
+.brand-logo { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+.close-btn { font-size: 28px; cursor: pointer; color: var(--gray-light); line-height: 1;}
+.close-btn:hover { color: var(--danger); }
+.menu-items { padding: 20px 12px; display: flex; flex-direction: column; gap: 5px; }
+.menu-link { 
+    display: flex; align-items: center; gap: 15px; padding: 12px 16px;
+    text-decoration: none; color: var(--gray); font-weight: 500; font-size: 0.95rem; 
+    border-radius: 8px; transition: all 0.2s ease;
+}
+.menu-link:hover { background: var(--bg-body); color: var(--dark); }
+.menu-link.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+.menu-link .icon { font-size: 1.1rem; width: 24px; text-align: center; }
+
+/* Overlay Background Gelap saat menu HP terbuka */
+.overlay { position: fixed; inset: 0; background: rgba(17, 24, 39, 0.5); z-index: 1000; display: none; backdrop-filter: blur(2px); }
+.overlay.active { display: block; }
+
+/* ================= KONTEN UTAMA ================= */
+.app-wrapper { transition: margin-left 0.3s ease-in-out; }
+.main-content { padding: 24px; max-width: 1100px; margin: 0 auto; }
+.content-section { display: none; }
+.content-section.active { display: block; animation: fadeIn 0.4s ease; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ================= JAM REALTIME ================= */
+.realtime-clock-card {
+    background: var(--card-bg); padding: 20px; border-radius: 16px; margin-bottom: 24px;
+    box-shadow: var(--shadow-md); border: 1px solid var(--border-color); text-align: center;
+}
+.date-text { font-size: 0.9rem; font-weight: 600; color: var(--gray); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em;}
+.time-text { font-size: 2.5rem; font-weight: 800; color: var(--dark); letter-spacing: 0.02em; line-height: 1.2;}
+
+
+/* ================= CARDS & GRID ================= */
+.card { background: var(--card-bg); padding: 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
+.card h2 { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 20px; display: flex; align-items: center; gap: 8px;}
+
+.status-grid, .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;}
+.stat-item, .summary-item { padding: 20px; margin-bottom: 0; display: flex; flex-direction: column; justify-content: center; }
+.stat-item.full-width { grid-column: span 2; }
+
+/* Perbaikan config-grid untuk HP (1 kolom berderet ke bawah) */
+.config-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px;}
+.config-input { display: flex; flex-direction: column; gap: 6px;}
+
+.header-card { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+.card-info h2 { margin-bottom: 4px; }
+.card-info p { font-size: 0.9rem; font-weight: 500; color: var(--gray); }
+.action-card { display: flex; flex-direction: column; gap: 12px;}
+
+/* ================= TYPOGRAPHY ================= */
+.value { font-size: 1.75rem; font-weight: 800; color: var(--dark); margin-top: 5px;}
+.sum-value { font-size: 2.5rem; font-weight: 800; color: var(--primary); }
+.summary-item.accent .sum-value { color: var(--success); }
+.label, .sum-label { font-size: 0.85rem; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em;}
+.highlight { color: var(--success); }
+
+/* ================= TOMBOL ================= */
+button { border: none; cursor: pointer; border-radius: 8px; font-weight: 600; font-size: 0.95rem; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;}
+button:active { transform: translateY(1px); }
+
+.btn-primary { background: var(--primary); color: white; padding: 12px 20px; width: 100%; box-shadow: 0 4px 6px rgba(59, 130, 246, 0.25);}
+.btn-primary:hover { background: var(--primary-hover); }
+
+.btn-toggle { padding: 10px 20px; background: var(--gray); color: white; border-radius: 8px; box-shadow: var(--shadow-sm);}
+.btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); padding: 10px 20px; width: 100%; }
+.btn-outline:hover { background: var(--primary-light); }
+.btn-outline.info { border-color: var(--success); color: var(--success); }
+.btn-outline.info:hover { background: #ecfdf5; }
+
+.btn-save { width: 100%; background: var(--dark); color: white; padding: 12px; margin-top: 5px; }
+.btn-save:hover { background: #000; }
+
+.btn-download { background: var(--success); color: white; padding: 12px 20px; width: 100%; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);}
+.btn-download:hover { background: #059669; }
+
+.action-btn { width: auto; background: var(--primary); color: white; border-radius: 6px; padding: 6px 12px; font-size: 0.85rem;}
+.action-btn.danger { background: var(--danger); box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);}
+.action-btn.danger:hover { background: #dc2626; }
+
+/* Tombol Kipas */
+.button-group-speed { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.btn-speed { padding: 16px 5px; background: var(--bg-body); color: var(--gray); font-size: 0.9rem; border: 1px solid var(--border-color); font-weight: 700;}
+.btn-speed.active { background: var(--success); color: white; border-color: var(--success); box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);}
+.btn-speed:disabled { opacity: 0.5; cursor: not-allowed; background: #f9fafb; border-color: #f3f4f6;}
+
+/* ================= INPUT & FORM ================= */
+.enroll-form, .filter-group { display: flex; flex-direction: column; gap: 12px; }
+input { padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; transition: 0.2s; font-size: 0.95rem; background: var(--bg-body); color: var(--dark);}
+input:focus { border-color: var(--primary); background: var(--card-bg); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);}
+.hint { font-size: 0.85rem; color: var(--gray); margin-top: 12px; display: flex; align-items: center; gap: 5px;}
+.hint::before { content: "\f05a"; font-family: "Font Awesome 6 Free"; font-weight: 900; }
+
+/* ================= TABEL RESPONSIVE ================= */
+.table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; border: 1px solid var(--border-color);}
+.modern-table { width: 100%; border-collapse: collapse; min-width: 600px; background: var(--card-bg);}
+.modern-table th { background: #f9fafb; text-align: left; padding: 16px; font-size: 0.85rem; font-weight: 600; color: var(--gray); text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
+.modern-table td { padding: 16px; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; color: var(--dark); vertical-align: middle;}
+.modern-table tbody tr:last-child td { border-bottom: none; }
+.modern-table tbody tr:hover { background-color: var(--bg-body); }
+
+/* ================= STATUS LED ESP32 ================= */
+.sensor-status { display: flex; align-items: center; background: var(--bg-body); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border-color);}
+.led { width: 10px; height: 10px; border-radius: 50%; background: var(--gray-light); margin-right: 8px;}
+.led.biru { background: var(--primary); box-shadow: 0 0 8px var(--primary); }
+.led.hijau { background: var(--success); box-shadow: 0 0 8px var(--success); }
+.led.merah { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
+.status-label { font-size: 0.8rem; font-weight: 700; color: var(--dark); letter-spacing: 0.02em;}
+
+/* ================= MODE LAYAR LEBAR (LAPTOP/TABLET) ================= */
+@media (min-width: 768px) {
+    .hamburger-btn { display: none; }
+    .sidebar { left: 0; width: 260px; }
+    .app-wrapper { margin-left: 260px; }
+    
+    .date-text { font-size: 1rem; }
+    .time-text { font-size: 3rem; }
+
+    .status-grid { grid-template-columns: repeat(3, 1fr); }
+    .stat-item.full-width { grid-column: auto; }
+    
+    .enroll-form { flex-direction: row; align-items: center; }
+    .enroll-form input { flex: 1; margin-bottom: 0; }
+    .enroll-form button { width: auto; padding: 12px 24px;}
+    
+    .action-card { flex-direction: row; }
+    .btn-outline { width: auto; flex: 1; }
+    
+    .filter-card { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .filter-group { flex-direction: row; align-items: center; margin-bottom: 0;}
+    .filter-group label { white-space: nowrap; margin-right: 10px; font-weight: 600;}
+    .btn-download { width: auto; margin-top: 0; }
+
+    /* Perbaikan config-grid untuk PC/Laptop (3 kolom sejajar) */
+    .config-grid { grid-template-columns: 1fr 1fr 1fr; }
+}

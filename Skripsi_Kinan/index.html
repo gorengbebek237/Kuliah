@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Smart Class Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a2035"> 
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="brand">
+            <!-- <div class="brand-logo"><i class="fas fa-graduation-cap"></i></div> -->
+            <img src="icon-192.png" alt="Logo Smart Class" class="brand-logo">
+            <span>Smart Class</span>
+        </div>
+        <span class="close-btn" onclick="toggleMenu()">&times;</span>
+    </div>
+    <div class="menu-items">
+        <a href="#" class="menu-link active" onclick="showSection('sec-fan', this)">
+            <i class="fas fa-fan icon"></i> Fan Control
+        </a>
+        <a href="#" class="menu-link" onclick="showSection('sec-absen', this)">
+            <i class="fas fa-calendar-check icon"></i> Data Kedatangan
+        </a>
+        <a href="#" class="menu-link" onclick="showSection('sec-user', this)">
+            <i class="fas fa-users-cog icon"></i> Manajemen User
+        </a>
+    </div>
+</nav>
+
+<div class="app-wrapper">
+    <header class="top-nav">
+        <div class="nav-left">
+            <button class="hamburger-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+            <h1 id="page-title">Fan Control</h1>
+        </div>
+        <div class="sensor-status">
+            <div class="led" id="led-indicator"></div>
+            <span id="status-text" class="status-label">Memuat...</span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        
+        <div class="realtime-clock-card">
+            <div id="date-display" class="date-text">Memuat tanggal...</div>
+            <div id="time-display" class="time-text">00:00:00 WIB</div>
+        </div>
+
+        <section id="sec-fan" class="content-section active">
+            <div class="card header-card">
+                <div class="card-info">
+                    <h2>Mode Operasi Kipas</h2>
+                    <p id="mode-desc">Status: Memuat...</p>
+                </div>
+                <button id="modeToggleBtn" class="btn-toggle">Memuat...</button>
+            </div>
+
+            <div class="status-grid">
+                <div class="card stat-item">
+                    <span class="label">Suhu Ruangan</span>
+                    <span id="tempValue" class="value">- °C</span>
+                </div>
+                <div class="card stat-item">
+                    <span class="label">Deteksi PIR</span>
+                    <span id="pirValue" class="value">-</span>
+                </div>
+                <div class="card stat-item full-width">
+                    <span class="label">Status Kipas Saat Ini</span>
+                    <span id="fanStatus" class="value highlight">-</span>
+                </div>
+            </div>
+
+            <div class="card" id="manualControls">
+                <h2>Kontrol Manual (Kecepatan)</h2>
+                <div class="button-group-speed">
+                    <button class="btn-speed" data-speed="0" disabled>OFF</button>
+                    <button class="btn-speed" data-speed="85" disabled>S1</button>
+                    <button class="btn-speed" data-speed="170" disabled>S2</button>
+                    <button class="btn-speed" data-speed="255" disabled>S3</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Threshold Suhu Otomatis (°C)</h2>
+                <div class="config-grid">
+                    <div class="config-input">
+                        <label>Speed 1 (Saat ini: <span id="val-t1" style="color: var(--primary); font-weight: 800;">-</span>°C)</label>
+                        <input type="number" id="t1Input" placeholder="Set S1 baru...">
+                    </div>
+                    <div class="config-input">
+                        <label>Speed 2 (Saat ini: <span id="val-t2" style="color: var(--primary); font-weight: 800;">-</span>°C)</label>
+                        <input type="number" id="t2Input" placeholder="Set S2 baru...">
+                    </div>
+                    <div class="config-input">
+                        <label>Speed 3 (Saat ini: <span id="val-t3" style="color: var(--primary); font-weight: 800;">-</span>°C)</label>
+                        <input type="number" id="t3Input" placeholder="Set S3 baru...">
+                    </div>
+                </div>
+                <button id="saveThresholdBtn" class="btn-save"><i class="fas fa-save"></i> Simpan Perubahan</button>
+            </div>
+        </section>
+
+        <section id="sec-absen" class="content-section">
+            <div class="summary-grid">
+                <div class="card summary-item">
+                    <span class="sum-label">Hadir Hari Ini</span>
+                    <span id="count-hari-ini" class="sum-value">0</span>
+                </div>
+                <div class="card summary-item accent">
+                    <span class="sum-label">Hadir Minggu Ini</span>
+                    <span id="count-minggu-ini" class="sum-value">0</span>
+                </div>
+            </div>
+            
+            <div class="card filter-card">
+                <div class="filter-group">
+                    <label>Filter Tanggal:</label>
+                    <input type="date" id="tanggal" onchange="loadAbsensiData()">
+                </div>
+                <button class="btn-download btn-action-blue" onclick="unduhExcel()"><i class="fas fa-download"></i> Download Laporan (Excel)</button>
+            </div>
+
+            <div class="card table-card">
+                <div class="table-responsive">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Hari</th>
+                                <th>Nama Siswa</th>
+                                <th>Jam Masuk</th>
+                                <th>Jam Pulang</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-absensi">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-user" class="content-section">
+            <div class="card action-card">
+                <button class="btn-outline" onclick="setFingerMode('scan')"><i class="fas fa-fingerprint"></i> Aktifkan Mode Scan</button>
+                <button class="btn-outline info" onclick="setFingerMode('daftar')"><i class="fas fa-user-plus"></i> Siapkan Mode Daftar</button>
+            </div>
+
+            <div class="card enroll-card">
+                <h2>Daftarkan Siswa Baru</h2>
+                <div class="enroll-form">
+                    <input type="text" placeholder="Masukkan Nama Lengkap..." id="nama-baru">
+                    <button class="btn-primary" onclick="mulaiDaftar()"><i class="fas fa-rss"></i> Mulai Rekam Jari</button>
+                </div>
+                <p class="hint">Pastikan alat sudah dalam "Mode Daftar" sebelum menekan tombol rekam.</p>
+            </div>
+
+            <div class="card table-card">
+                <h2>Daftar User Terdaftar</h2>
+                <div class="table-responsive">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Siswa</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-users">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="script.js"></script>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker Terdaftar!', reg))
+                .catch(err => console.error('Service Worker Gagal!', err));
+        });
+    }
+</script>
+
+</body>
+</html>
