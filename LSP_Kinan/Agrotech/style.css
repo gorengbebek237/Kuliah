@@ -1,0 +1,130 @@
+/* --- Konfigurasi Tema (Variabel Warna) --- */
+:root {
+    --primary-green: #2e7d32;
+    --secondary-green: #81c784;
+    --bg-color: #f0f4f1; /* Hijau keabu-abuan yang sangat lembut */
+    --card-bg: #ffffff;
+    --text-main: #2c3e50;
+    --text-muted: #7f8c8d;
+}
+
+/* --- Reset & Base Styles --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 20px;
+    color: var(--text-main);
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* --- Header Styling (Desain Baru dengan Gradient) --- */
+.header {
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+    color: white;
+    padding: 25px 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.25);
+}
+
+.header h1 {
+    margin: 0 0 5px 0;
+    font-size: 32px;
+    letter-spacing: 1px;
+}
+
+.header p {
+    margin: 0;
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+/* --- Grid Layout --- */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* --- Card UI Styling (Efek Hover & Shadow) --- */
+.card {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--primary-green);
+    border-bottom: 2px dashed #e0e0e0;
+    padding-bottom: 12px;
+    margin-bottom: 25px;
+    font-size: 18px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+/* --- Status Badges (Desain Baru dengan Border Kiri) --- */
+.status {
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    display: inline-block;
+    min-width: 50px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.on {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-left: 5px solid #2e7d32;
+}
+
+.off {
+    background-color: #ffebee;
+    color: #c62828;
+    border-left: 5px solid #c62828;
+}
+
+/* --- Teks Info Tambahan --- */
+p {
+    line-height: 1.6;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #e0e0e0;
+    margin: 20px 0;
+}
+
+/* --- Responsivitas (Mobile Friendly) --- */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    .full-width {
+        grid-column: span 1;
+    }
+    .header h1 {
+        font-size: 24px;
+    }
+}
