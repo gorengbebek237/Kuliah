@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Agroteknologi Premium</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <h1>Sistem Otomatisasi Pompa dan Kipas Pada Monitoring Kelembaban Tanah dan Suhu Ruang Tanam</h1>
+        <p>By Muhammad Luqman Hakim 20122943</p>
+    </header>
+
+    <main class="grid">
+        <section class="card card-tall">
+            <h3>Kelembapan Tanah (Analog)</h3>
+            <div id="gaugeSoil"></div>
+        </section>
+
+        <section class="card">
+            <h3>Kondisi Udara Aktual</h3>
+            <div class="dht-info-container">
+                <div class="dht-item">
+                    <span class="dht-label">Suhu Udara</span>
+                    <h2 class="dht-value"><span id="txtTemp">--</span><small>°C</small></h2>
+                </div>
+                <div class="dht-item">
+                    <span class="dht-label">Kelembapan</span>
+                    <h2 class="dht-value"><span id="txtHum">--</span><small>%</small></h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>Status Perangkat</h3>
+            <div class="status-list">
+                <div class="status-row">
+                    <span>Pompa Air</span>
+                    <span id="statPump" class="status">Menunggu...</span>
+                </div>
+                <div class="status-row">
+                    <span>Kipas Pendingin</span>
+                    <span id="statFan" class="status">Menunggu...</span>
+                </div>
+            </div>
+            <hr>
+            <div class="update-info">
+                <span>Terakhir Update:</span>
+                <strong id="lastUpdate">-</strong>
+            </div>
+        </section>
+
+        <section class="card full-width">
+            <h3>Grafik Suhu & Kelembapan Udara</h3>
+            <div id="lineChartDHT"></div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
