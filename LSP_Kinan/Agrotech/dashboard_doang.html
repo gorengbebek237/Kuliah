@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Monitoring</title>
+    <!-- Library untuk Grafik -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+
+    <h1>Sistem Monitoring dan Otomatisasi Penyiraman serta Pendinginan Ruangan Greenhouse pada Tanaman Cabai</h1>
+    <p>By Kinanthi Maya Oktaviany 20122695</p>
+    <hr>
+
+    <h2>Data Sensor Real-time</h2>
+    <p>Suhu Udara: <strong id="realtimeTemp">--</strong> °C</p>
+    <p>Kelembapan Udara: <strong id="realtimeHum">--</strong> %</p>
+
+    <h2>Kelembapan Tanah (Analog)</h2>
+    <div id="gaugeSoil"></div>
+
+    <hr>
+
+    <h2>Kontrol Perangkat</h2>
+    
+    <p><strong>Mode Sistem:</strong> <span id="txtMode">Otomatis</span></p>
+    <button onclick="setMode(1)">Set Auto</button>
+    <button onclick="setMode(0)">Set Manual</button>
+    <br><br>
+
+    <p><strong>Pompa Air:</strong> <span id="statPump">Menunggu...</span></p>
+    <button onclick="setDevice('pump', 1)">ON Pompa</button>
+    <button onclick="setDevice('pump', 0)">OFF Pompa</button>
+    <br><br>
+
+    <p><strong>Kipas Pendingin:</strong> <span id="statFan">Menunggu...</span></p>
+    <button onclick="setDevice('fan', 1)">ON Kipas</button>
+    <button onclick="setDevice('fan', 0)">OFF Kipas</button>
+
+    <hr>
+
+    <h2>Grafik DHT21 (Suhu & Kelembapan Udara)</h2>
+    <div id="lineChartDHT"></div>
+
+    <!-- Menghubungkan ke file JavaScript terpisah -->
+    <script src="script.js"></script>
+
+</body>
+</html>
