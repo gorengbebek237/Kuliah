@@ -6,14 +6,12 @@
 #include <LittleFS.h>       
 #include <WebServer.h>      
 
-// --- Konfigurasi Pin ---
 #define DHTPIN 18          
 #define DHTTYPE DHT21      
 #define SOIL_PIN 34        
 #define RELAY_PUMP 16      
 #define RELAY_FAN 27       
 
-// --- Konfigurasi WiFi & ThingSpeak ---
 const char* ssid = "Man";                   
 const char* password = "Mantul123";         
 unsigned long myChannelNumber = 3400718;    
@@ -28,14 +26,12 @@ WebServer server(80);
 const int SOIL_DRY = 40;       
 const float TEMP_HOT = 25.0;   
 
-// --- Timer Non-Blocking ---
 unsigned long lastTimeCloud = 0;
-const unsigned long timerDelayCloud = 20000; // ThingSpeak 20 detik
+const unsigned long timerDelayCloud = 20000; 
 
 unsigned long lastTimeSensor = 0;
-const unsigned long timerDelaySensor = 2000; // Sensor & LCD 2 detik
+const unsigned long timerDelaySensor = 2000; 
 
-// Variabel Global untuk menyimpan data terakhir
 float lastTemp = 0.0;
 float lastHum = 0.0;
 int lastSoil = 0;
@@ -66,7 +62,6 @@ void setup() {
   }
   Serial.println("LittleFS berhasil di-mount.");
 
-  // Memaksa Web Server membuka index.html saat IP diakses
   server.on("/", HTTP_GET, []() {
     File file = LittleFS.open("/index.html", "r");
     if (!file) {
@@ -77,7 +72,6 @@ void setup() {
     file.close();
   });
 
-  // Melayani file css dan js
   server.serveStatic("/", LittleFS, "/");  
 
   server.begin();
@@ -97,10 +91,8 @@ void setup() {
 }
 
 void loop() {
-  // 1. Menjaga Web Server tetap hidup merespons browser
   server.handleClient(); 
 
-  // 2. Baca Sensor & Update LCD setiap 2 Detik (TIDAK SPAM)
   if (millis() - lastTimeSensor >= timerDelaySensor) {
     lastTimeSensor = millis();
 
@@ -114,21 +106,18 @@ void loop() {
       int soilPercent = map(soilAnalogValue, 4095, 1000, 0, 100);
       lastSoil = constrain(soilPercent, 0, 100);
 
-      // Logika Aktuator
       pumpState = (lastSoil < SOIL_DRY);
       digitalWrite(RELAY_PUMP, pumpState ? HIGH : LOW);
 
       fanState = (lastTemp > TEMP_HOT);
       digitalWrite(RELAY_FAN, fanState ? HIGH : LOW);
 
-      // Tampilan LCD
       lcd.setCursor(0, 0); lcd.print("T:" + String(lastTemp, 1) + "C H:" + String(lastHum, 1) + "%  ");
       lcd.setCursor(0, 1); lcd.print("Soil: " + String(lastSoil) + "%   ");
       lcd.setCursor(0, 2); lcd.print("PUMP:" + String(pumpState ? "ON " : "OFF") + " FAN:" + String(fanState ? "ON " : "OFF"));
     }
   }
 
-  // 3. Kirim data ke ThingSpeak setiap 20 Detik
   if (millis() - lastTimeCloud >= timerDelayCloud) {
     lastTimeCloud = millis();
     
