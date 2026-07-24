@@ -64,7 +64,7 @@ void setup() {
   Serial.println("LittleFS berhasil di-mount.");
 
   server.on("/", HTTP_GET, []() {
-    File file = LittleFS.open("/index.html", "r");
+    File file = LittleFS.open("/dashboard_K.html", "r");
     if (!file) {
       server.send(404, "text/plain", "Error: File index.html tidak ditemukan!");
       return;
