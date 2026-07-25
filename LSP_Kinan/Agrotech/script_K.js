@@ -1,6 +1,6 @@
 // --- KONFIGURASI THINGSPEAK ---
-const CHANNEL_ID = '3400718'; 
-const READ_API_KEY = '4V8HDICQV3IQM9QD'; 
+const CHANNEL_ID = '3435512'; // Menggunakan Channel ID yang baru
+const READ_API_KEY = 'HQ36KS3Q7581USR5'; // Pastikan Read API Key ini sesuai dengan Channel yang baru ya!
 
 // Status mode di sisi web (Default: Auto)
 let currentModeIsAuto = true; 
@@ -14,18 +14,18 @@ function setMode(autoVal) {
     
     // Kirim HTTP GET ke ESP32 secara background
     fetch(`/set_mode?auto=${autoVal}`).catch(e => console.log("Error set mode:", e));
-    alert(currentModeIsAuto ? "Mode Otomatis Aktif!" : "Mode Manual Aktif! Kamu sekarang bisa mengontrol alat.");
+    alert(currentModeIsAuto ? "Mode Otomatis Aktif!" : "Mode Manual Aktif! Kamu sekarang bisa mengontrol pompa.");
 }
 
 function setDevice(device, state) {
     // Cegah kontrol manual jika masih mode otomatis
     if (currentModeIsAuto) {
-        alert("Ubah ke Mode Manual terlebih dahulu sebelum mematikan/menyalakan alat!");
+        alert("Ubah ke Mode Manual terlebih dahulu sebelum mematikan/menyalakan pompa!");
         return;
     }
     
     // Update teks di HTML secara langsung agar responsif
-    let el = document.getElementById(device === 'pump' ? 'statPump' : 'statFan');
+    let el = document.getElementById('statPump');
     el.innerText = state === 1 ? "ON" : "OFF";
 
     // Kirim HTTP GET ke ESP32 secara background
@@ -33,7 +33,7 @@ function setDevice(device, state) {
 }
 
 // --- INISIALISASI GRAFIK APEXCHARTS ---
-// 1. Gauge Kelembapan Tanah
+// Gauge Kelembapan Tanah
 var optionsSoil = {
     series: [0],
     chart: { height: 280, type: 'radialBar' },
@@ -52,27 +52,11 @@ var optionsSoil = {
 var chartSoil = new ApexCharts(document.querySelector("#gaugeSoil"), optionsSoil);
 chartSoil.render();
 
-// 2. Grafik Area DHT21
-var optionsDHT = {
-    series: [
-        { name: "Suhu", data: [] }, 
-        { name: "Kelembapan", data: [] }
-    ],
-    chart: { height: 350, type: 'area', animations: { enabled: false }, toolbar: { show: true } },
-    dataLabels: { enabled: false }, 
-    stroke: { width: [3, 3], curve: 'smooth' },
-    colors: ['#FF9800', '#00BCD4'],
-    xaxis: { type: 'datetime' }, 
-    tooltip: { x: { format: 'dd MMM yyyy HH:mm:ss' } },
-    legend: { show: false }
-};
-var chartDHT = new ApexCharts(document.querySelector("#lineChartDHT"), optionsDHT);
-chartDHT.render();
-
 // --- FUNGSI MENGAMBIL DAN MEMPERBARUI DATA THINGSPEAK ---
 async function updateDashboard() {
     try {
-        const url = `https://api.thingspeak.com/channels/${CHANNEL_ID}/feeds.json?api_key=${READ_API_KEY}&results=15`;
+        // Hanya mengambil 1 data terakhir karena grafik history DHT sudah dihapus
+        const url = `https://api.thingspeak.com/channels/${CHANNEL_ID}/feeds.json?api_key=${READ_API_KEY}&results=1`;
         const response = await fetch(url);
         const data = await response.json();
         
@@ -81,27 +65,13 @@ async function updateDashboard() {
 
         const lastFeed = feeds[feeds.length - 1];
 
-        // Update Teks Suhu & Kelembapan
-        document.getElementById('realtimeTemp').innerText = (parseFloat(lastFeed.field1) || 0).toFixed(1);
-        document.getElementById('realtimeHum').innerText = (parseFloat(lastFeed.field2) || 0).toFixed(1);
-        
-        // Update Grafik Gauge Tanah
-        chartSoil.updateSeries([parseFloat(lastFeed.field3) || 0]);
+        // Update Grafik Gauge Tanah dari Field 1
+        chartSoil.updateSeries([parseFloat(lastFeed.field1) || 0]);
 
-        // Update Status Relay HANYA JIKA dalam mode Auto
-        // (Jika Manual, biarkan teksnya mengikuti tombol yang ditekan user agar tidak bentrok)
+        // Update Status Pompa dari Field 2 (HANYA JIKA dalam mode Auto)
         if (currentModeIsAuto) {
-            document.getElementById('statPump').innerText = lastFeed.field4 == "1" ? "ON" : "OFF";
-            document.getElementById('statFan').innerText = lastFeed.field5 == "1" ? "ON" : "OFF";
+            document.getElementById('statPump').innerText = lastFeed.field2 == "1" ? "ON" : "OFF";
         }
-
-        // Update Grafik Garis DHT
-        const suhuData = feeds.map(f => ({ x: new Date(f.created_at).getTime(), y: parseFloat(f.field1) || 0 }));
-        const humData = feeds.map(f => ({ x: new Date(f.created_at).getTime(), y: parseFloat(f.field2) || 0 }));
-        chartDHT.updateSeries([
-            { name: "Suhu (°C)", data: suhuData }, 
-            { name: "Kelembapan Udara (%)", data: humData }
-        ]);
 
     } catch (error) {
         console.error("Gagal mengambil data dari ThingSpeak:", error);
