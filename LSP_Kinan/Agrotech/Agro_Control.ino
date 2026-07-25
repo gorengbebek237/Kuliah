@@ -28,7 +28,7 @@ const unsigned long timerDelaySensor = 2000;
 
 int lastSoil = 0;
 bool pumpState = false;
-bool isAutoMode = true; 
+bool isAutoMode = true; // Menambahkan variabel untuk melacak mode sistem
 
 void setup() {
   Serial.begin(115200);
@@ -68,7 +68,9 @@ void setup() {
     while (1);
   }
 
+  // --- PENGATURAN ROUTE WEB SERVER ---
   
+  // 1. Route untuk memuat file HTML utama
   server.on("/", HTTP_GET, []() {
     File file = LittleFS.open("/dashboard_K.html", "r");
     if (!file) {
@@ -79,6 +81,7 @@ void setup() {
     file.close();
   });
 
+  // 2. Route untuk menerima perintah ganti Mode (Auto/Manual) dari JS
   server.on("/set_mode", HTTP_GET, []() {
     if (server.hasArg("auto")) {
       int modeVal = server.arg("auto").toInt();
@@ -90,6 +93,7 @@ void setup() {
     }
   });
 
+  // 3. Route untuk menerima perintah nyala/mati Pompa dari JS
   server.on("/set_pump", HTTP_GET, []() {
     // Pompa hanya bisa dikontrol manual JIKA isAutoMode == false
     if (!isAutoMode && server.hasArg("state")) {
@@ -123,11 +127,14 @@ void loop() {
     lastSoil = map(soilAnalog, 4095, 1000, 0, 100);
     lastSoil = constrain(lastSoil, 0, 100);
 
+    // --- LOGIKA KONTROL POMPA ---
+    // Pompa otomatis hanya menyala/mati jika sistem dalam mode AUTO
     if (isAutoMode) {
       pumpState = (lastSoil < SOIL_DRY);
       digitalWrite(RELAY_PUMP, pumpState ? HIGH : LOW);
     }
 
+    // --- TAMPILAN LCD ---
     lcd.setCursor(0,0);
     lcd.print("Kelembapan Tanah");
 
@@ -142,6 +149,7 @@ void loop() {
     else lcd.print("OFF");
     lcd.print("      ");
 
+    // Baris ke-4 LCD digunakan untuk menampilkan Mode (Auto/Manual)
     lcd.setCursor(0,3);
     lcd.print("Mode  : ");
     lcd.print(isAutoMode ? "AUTO  " : "MANUAL");
