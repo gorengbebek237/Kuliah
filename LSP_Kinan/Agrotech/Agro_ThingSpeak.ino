@@ -94,9 +94,8 @@ void loop() {
 
     // Menampilkan Alamat IP di baris ke-4
     lcd.setCursor(0,3);
-    lcd.print("IP: ");
-    lcd.print(WiFi.localIP());
-    lcd.print("      ");
+    lcd.print("ThingSpeak: OK")
+
 
     Serial.print("Soil: ");
     Serial.print(lastSoil);
